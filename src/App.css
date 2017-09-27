@@ -22,3 +22,33 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.histogram .bar rect {
+  fill: steelblue;
+  image-rendering: crispEdges;
+}
+
+.histogram .bar text {
+  fill: #fff;
+  font: 12px sans-serif;
+}
+
+button {
+  margin-right: .5em;
+  margin-bottom: .3em !important;
+}
+
+.row {
+  margin-top: 10px;
+}
+
+.mean text {
+  font: 11px sans-serif;
+  fill: grey;
+}
+
+.mean path {
+  stroke-dasharray: 3;
+  stroke: grey;
+  stroke-width: 1px;
+}
