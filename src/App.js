@@ -13,22 +13,21 @@ class App extends Component {
   }
   componentDidMount() {
     fetch('data.json')
-    .then(response => response.json())
-    .then(data => this.setState(this.processData(data)))
+      .then(response => response.json())
+      .then(data => this.setState(this.processData(data)))
   }
   processData(data) {
-    const [ min, max ] = [10, 10000]
-    const current = Object.keys(data.current).map(feature => {
-      let total = data.current[feature].total_traffic
-      total = isNaN(total) || total < 50 
-        ? Math.random() * (max - min) + min
-        : total
-
-      return {
-        feature,
-        total
-      }
-    })
+    const current = Object.keys(data.current)
+      .filter(feature => feature !== 'organic')
+      .map(feature => {
+        let total = data.current[feature].total_count
+        total = isNaN(total) ? 0 : total
+        return {
+          feature,
+          total
+        }
+      })
+      .sort((a, b) => b.total - a.total)
 
     return {
       data: {
@@ -54,12 +53,12 @@ class App extends Component {
           </Row>
           <Row>
             <Col xs={9} md={6}><BlackboxBarChart data={data.current}
-                                                 width={500}
-                                                 height={500} /></Col>
+              width={500}
+              height={500} /></Col>
             <Col xs={9} md={6}>Second column</Col>
           </Row>
         </Grid>
-        
+
       </div>
     );
   }
