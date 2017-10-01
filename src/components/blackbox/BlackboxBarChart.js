@@ -5,6 +5,12 @@ import { select } from 'd3-selection'
 import { axisLeft } from 'd3-axis'
 
 class BlackboxBarChart extends Component {
+
+    padding = 20
+    yAxisXPos = 130
+    barLabelWidth = 50
+    barLabelOffset = 5
+
     constructor(props) {
         super(props)
         this.createBarChart = this.createBarChart.bind(this)
@@ -19,20 +25,17 @@ class BlackboxBarChart extends Component {
     }
 
     createBarChart() {
-        const padding = 20;
-        const yAxisXPos = 130;
-        const barLabelWidth = 50;
         const node = this.node
         const { data, width, height } = this.props
         const dataMax = max(data, d => d.total)
         const features = data.map(d => d.feature)
         const xScale = scaleLinear()
             .domain([0, dataMax])
-            .range([0, width - yAxisXPos - barLabelWidth])
+            .range([0, width - this.yAxisXPos - this.barLabelWidth])
         const yScale = scaleBand()
             .domain(features)
-            .rangeRound([padding, height - padding])
-            .paddingInner(0.1)   
+            .rangeRound([this.padding, height - this.padding])
+            .paddingInner(0.1)
         const yAxis = axisLeft().scale(yScale)
 
         select(node)
@@ -51,12 +54,11 @@ class BlackboxBarChart extends Component {
             .selectAll("rect")
             .data(data)
             .attr("y", (d, i) => yScale(d.feature))
-            .attr("x", d => yAxisXPos)
+            .attr("x", d => this.yAxisXPos)
             .attr("width", d => xScale(d.total))
-            .attr("height", ((height - padding * 2)  / features.length) - 5)
+            .attr("height", ((height - this.padding * 2) / features.length) - 5)
             .attr('fill', 'steelblue')
 
-        
         select(node)
             .selectAll('text')
             .data(data)
@@ -73,23 +75,26 @@ class BlackboxBarChart extends Component {
             .selectAll('text')
             .data(data)
             .text(d => d.total)
-            .attr('x', d => xScale(d.total) + yAxisXPos + 5)
+            .attr('x', d => xScale(d.total) + this.yAxisXPos + this.barLabelOffset)
             .attr('y', d => yScale(d.feature) + 10)
-            .attr('font-size', '10px')
+            .attr('class', 'bar-text')
 
         select(node)
             .append('g')
-            .attr('transform', `translate(${yAxisXPos}, 0)`)
+            .attr('transform', `translate(${this.yAxisXPos}, 0)`)
             .call(yAxis);
     }
 
     render() {
-        const { width, height } = this.props
+        const { width, height, title } = this.props
         return (
-            <svg ref={node => this.node = node}
-                width={width}
-                height={height}>
-            </svg>
+            <div>
+                <h4>{title}</h4>
+                <svg ref={node => this.node = node}
+                    width={width}
+                    height={height}>
+                </svg>
+            </div>
         )
     }
 }
