@@ -21,13 +21,12 @@ class SeamlessBarChart extends Component {
         this.createBarChart()
     }
 
-    // componentDidUpdate() {
-    //     this.createBarChart()
-    // }
+    componentDidUpdate() {
+        this.createBarChart()
+    }
 
     createBarChart() {
         const faux = this.props.connectFauxDOM('g', 'chart')
-        //const node = this.node
         const { data, width, height } = this.props
         const dataMax = max(data, d => d.total)
         const features = data.map(d => d.feature)
@@ -95,8 +94,7 @@ class SeamlessBarChart extends Component {
         return (
             <div>
                 <h4>{title}</h4>
-                <svg ref={node => this.node = node}
-                    width={width}
+                <svg width={width}
                     height={height}>
                     {this.props.chart}
                 </svg>
