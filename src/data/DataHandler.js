@@ -1,6 +1,8 @@
+const featureFilter = feature => feature !== 'organic'
+
 const processData = data => {
-    const current = Object.keys(data.current)
-    .filter(feature => feature !== 'organic')
+  const current = Object.keys(data.current)
+    .filter(featureFilter)
     .map(feature => {
       let total = data.current[feature].total_count
       total = isNaN(total) ? 0 : total
@@ -11,9 +13,28 @@ const processData = data => {
     })
     .sort((a, b) => b.total - a.total)
 
+  const tsCount = data.time_series.count
+  const timeSeries = Object.keys(tsCount)
+    .filter(featureFilter)
+    .map(feature => {
+      return Object.keys(tsCount[feature])
+        .map(date => {
+          let featureCount = tsCount[feature][date]
+          return {
+            feature,
+            count: featureCount ? featureCount.total.whole : 0,
+            date: Date.parse(date)
+          }
+        })
+    })
+    .reduce((acc, cur) => {
+      return acc.concat(cur)
+    },[]); //flatten arrays
+
   return {
     data: {
-      current
+      current,
+      timeSeries
     }
   }
 }

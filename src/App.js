@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap'
 import processData from './data/DataHandler';
-import Layout from './components/layout/Layout'
+import Layout from './components/Layout'
 import logo from './logo.svg';
 import d3logo from './d3logo.svg';
 import './App.css';
