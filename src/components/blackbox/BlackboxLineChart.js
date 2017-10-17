@@ -1,6 +1,18 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
+import { line } from 'd3-shape'
+import { nest } from 'd3-collection'
+import { scaleLinear, scaleTime } from 'd3-scale'
+import { max, extent } from 'd3-array'
+import { select } from 'd3-selection'
+import { axisLeft, axisBottom } from 'd3-axis'
 
 class BlackboxLineChart extends Component {
+
+    static defaultProps = {
+        data: []
+    }
+
     padding = 20
     yAxisXPos = 130
     barLabelWidth = 50
@@ -8,147 +20,74 @@ class BlackboxLineChart extends Component {
 
     constructor(props) {
         super(props)
-        //this.createBarChart = this.createLineChart.bind(this)
+        this.renderChart = this.renderChart.bind(this)
     }
 
     componentDidMount() {
-     //   this.createLineChart()
+        this.renderChart()
     }
 
     componentDidUpdate() {
-     //   this.createLineChart()
+        this.renderChart()
     }
 
-    // createLineCh() {
-    //     function lineChart(data) {
-    //         const blue = "#fe9a22", 
-    //         green = "#5eaec5", 
-    //         orange = "#92c463",
-    //         xScale = d3.scaleLinear().domain([1,10.5]).range([20,480]),
-    //         yScale = d3.scaleLinear().domain([0,35]).range([480,20]),
-    //         xAxis = d3.axisBottom()
-    //                   .scale(xScale)
-    //                   .tickSize(480)
-    //                   .tickValues([1,2,3,4,5,6,7,8,9,10])
-                      
-    //         d3.select("svg")
-    //             .append("g")
-    //             .attr("id", "xAxisG")
-    //             .call(xAxis)
-                
-    //         yAxis = d3.axisRight()
-    //             .scale(yScale)
-    //             .ticks(10)
-    //             .tickSize(480)
-                
-    //         d3.select("svg")
-    //             .append("g")
-    //             .attr("id", "yAxisG")
-    //             .call(yAxis)
-                
-    //         d3.select("svg")
-    //             .selectAll("circle.tweets")
-    //             .data(data)
-    //             .enter()
-    //             .append("circle")
-    //             .attr("class", "tweets")
-    //             .attr("r", 5)
-    //             .attr("cx", d => xScale(d.day))
-    //             .attr("cy", d => yScale(d.tweets))
-    //             .style("fill", blue)
-                
-    //         d3.select("svg")
-    //             .selectAll("circle.retweets")
-    //             .data(data)
-    //             .enter()
-    //             .append("circle")
-    //             .attr("class", "retweets")
-    //             .attr("r", 5)
-    //             .attr("cx", d => xScale(d.day))
-    //             .attr("cy", d => yScale(d.retweets))
-    //             .style("fill", green)
-                
-    //         d3.select("svg")
-    //             .selectAll("circle.favorites").data(data)
-    //             .enter()
-    //             .append("circle")
-    //             .attr("class", "favorites")
-    //             .attr("r", 5)
-    //             .attr("cx", d => xScale(d.day))
-    //             .attr("cy", d => yScale(d.favorites))
-    //             .style("fill", orange)
-    // }
+    transformData(data) {
+        return nest()
+        .key(function(d){ return d.feature; })
+        .entries(data);
+    }
+    
+    renderChart() {
+        const { data, width, height } = this.props
+        const svg = select(this.node)
+        const xScale = scaleTime()
+            .domain(extent(data, d => d.date))
+            .range([0, width])
 
-    // createLine() {
-    //     const lambdaXScale = d => xScale(d.day)
-    //      var tweetLine = d3.line().x(lambdaXScale).y(d =>yScale(d.tweets))
-    //      var retweetLine = d3.line().x(lambdaXScale).y(d => yScale(d.retweets))
-    //      var favLine = d3.line().x(lambdaXScale).y(d => yScale(d.favorites))
-    //      d3.select("svg").append("path").attr("d", tweetLine(data)).attr("fill", "none").attr("stroke", blue).attr("stroke-width", 2)
-    //      d3.select("svg").append("path").attr("d", retweetLine(data)).attr("fill", "none").attr("stroke", green).attr("stroke-width", 2)
-    //      d3.select("svg").append("path").attr("d", favLine(data)).attr("fill", "none") .attr("stroke", orange).attr("stroke-width", 2)
-    // }
+        const yScale = scaleLinear()
+            .domain([0, max(data, d => d.count)])
+            .range([height - this.padding, 0])
 
-    // createLineChart() {
-    //     const node = this.node
-    //     const { data, width, height } = this.props
-    //     const dataMax = max(data, d => d.total)
-    //     const features = data.map(d => d.feature)
-    //     const xScale = scaleLinear()
-    //         .domain([0, dataMax])
-    //         .range([0, width - this.yAxisXPos - this.barLabelWidth])
-    //     const yScale = scaleBand()
-    //         .domain(features)
-    //         .rangeRound([this.padding, height - this.padding])
-    //         .paddingInner(0.1)
-    //     const yAxis = axisLeft().scale(yScale)
+        this.renderAxes(svg, xScale, yScale)
+        this.renderLines(svg, xScale, yScale)
+    }
 
-    //     select(node)
-    //         .selectAll("rect")
-    //         .data(data)
-    //         .enter()
-    //         .append("rect")
+    renderAxes(svg, xScale, yScale) {
+        const { height } = this.props
+        const xAxis = axisBottom().scale(xScale)
+            .ticks(10)
+        const yAxis = axisLeft().scale(yScale)
 
-    //     select(node)
-    //         .selectAll("rect")
-    //         .data(data)
-    //         .exit()
-    //         .remove()
+        svg.append('g')
+            .attr('transform', `translate(0, ${height - this.padding})`)
+            .call(xAxis);
 
-    //     select(node)
-    //         .selectAll("rect")
-    //         .data(data)
-    //         .attr("y", (d, i) => yScale(d.feature))
-    //         .attr("x", d => this.yAxisXPos)
-    //         .attr("width", d => xScale(d.total))
-    //         .attr("height", ((height - this.padding * 2) / features.length) - 5)
-    //         .attr('fill', 'steelblue')
+        svg.append('g')
+            .call(yAxis);
+    }
 
-    //     select(node)
-    //         .selectAll('text')
-    //         .data(data)
-    //         .enter()
-    //         .append('text')
+    renderLines(svg, xScale, yScale) {
+        const data = this.transformData(this.props.data)
+        const lineGenerator = line()
+            .x(d => xScale(d.date))
+            .y(d => yScale(d.count))
 
-    //     select(node)
-    //         .selectAll('text')
-    //         .data(data)
-    //         .exit()
-    //         .remove()
+        var pathLines = svg.selectAll("path.line")
+            .data(data)
 
-    //     select(node)
-    //         .selectAll('text')
-    //         .data(data)
-    //         .text(d => d.total)
-    //         .attr('x', d => xScale(d.total) + this.yAxisXPos + this.barLabelOffset)
-    //         .attr('y', d => yScale(d.feature) + 10)
-    //         .attr('class', 'bar-text')
-
-    //     select(node)
-    //         .append('g')
-    //         .attr('transform', `translate(${this.yAxisXPos}, 0)`)
-    //         .call(yAxis);
-    // }
+        pathLines
+            .enter()
+            .append("path")
+            .merge(pathLines)
+            .style("stroke", function (d, i) {
+                return 'red' 
+            })
+            .style('fill', 'none')
+            .attr("class", "line")
+            .attr("d", function (d) {
+                return lineGenerator(d.values);
+            });
+    }
 
     render() {
         const { width, height, title } = this.props

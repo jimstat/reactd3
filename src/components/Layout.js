@@ -13,7 +13,7 @@ class Layout extends Component {
       <Grid fluid={true}>
         <Row>
           <Col>
-            <BlackboxLineChart title="Blackbox Line" data={data.timeSeries} width={500} height={500} />
+            <BlackboxLineChart title="Blackbox Line" data={data.timeSeries} width={700} height={500} />
           </Col>
         </Row>
         <Row>
