@@ -15,7 +15,8 @@ const YAxis = (props) => {
     <g>
       <D3YAxis {...props} />
       <text transform="rotate(-90)"
-        y={-10}
+        x={props.height ? -(props.height / 2) : 0}
+        y={-50}
         textAnchor="middle">{props.label}</text>
     </g>
   )

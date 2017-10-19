@@ -33,6 +33,18 @@
   pointer-events: bounding-box;
 }
 
+.legend-item rect {
+  stroke-width: 1;
+}
+
+.legend-item:hover text, .legend-item.active text {
+  font-weight: bold;
+}
+
+.legend-item:hover rect, .legend-item.active rect {
+  stroke-width: 4;
+}
+
 .bold {
   font-weight: bold;
 }

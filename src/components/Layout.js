@@ -12,17 +12,17 @@ class Layout extends Component {
 
     return (
       <Grid fluid={true}>
-        <Row>
+        {/* <Row>
           <Col>
-            <BlackboxLineChart title="Blackbox Line" data={data.timeSeries} width={700} height={700} />
+            <BlackboxLineChart title="Blackbox Line" data={data.timeSeries} width={1200} height={600} />
+          </Col>
+        </Row> */}
+       <Row>
+          <Col>
+            <IntegratedLineChart title="Integrated Line" data={data.timeSeries} width={1200} height={600} />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <IntegratedLineChart title="Integrated Line" data={data.timeSeries} width={1400} height={600} />
-          </Col>
-        </Row>
-        <Row>
+        {/*<Row>
           <Col>
             <BlackboxBarChart title="Blackbox" data={data.current} width={500} height={500} />
           </Col>
@@ -36,7 +36,7 @@ class Layout extends Component {
           <Col>
             <SeamlessBarChart title="Seamless" data={data.current} width={500} height={500} />
           </Col>
-        </Row>
+        </Row> */}
       </Grid>
     )
   }

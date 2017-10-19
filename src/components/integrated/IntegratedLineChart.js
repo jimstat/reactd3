@@ -3,7 +3,6 @@ import { line } from 'd3-shape'
 import { nest } from 'd3-collection'
 import { scaleLinear, scaleTime } from 'd3-scale'
 import { max, extent, ascending } from 'd3-array'
-import _ from 'lodash'
 import XAxis from './XAxis'
 import YAxis from './YAxis'
 import Line from './Line'
@@ -92,11 +91,11 @@ class IntegratedLineChart extends Component {
                     height={height}
                     viewBox={`0 0 ${width} ${height}`}>
                     <Legend x={80}
-                        y={60}
+                        y={this.padding * 2}
                         items={this.legendItems}
                         activeItem={this.state.highlightedFeature}
                         onHoverItem={this.highlightFeature} />
-                    <g transform={`translate(${200}, ${0})`}
+                    <g transform={`translate(${250}, ${0})`}
                        height={height}>
                         <XAxis scale={this.xScale}
                             x={0}
@@ -104,7 +103,8 @@ class IntegratedLineChart extends Component {
                         <YAxis scale={this.yScale}
                             x={0}
                             y={0}
-                            label="Number of appearances" />
+                            height={height}
+                            label='Count' />
                         {this.lineData.map(series => this.makeLine(series))}
                     </g>
                 </svg>

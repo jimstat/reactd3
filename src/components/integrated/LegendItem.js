@@ -7,7 +7,7 @@ const LegendItem = ({ label, color, size, y, isActive, onHoverItem }) => {
         width: size,
         height: size
     }
-    const className = 'legend-item' + (isActive ? ' bold' : '')
+    const className = isActive ? 'legend-item active' : 'legend-item'
     return (
         <g className={className}
             onMouseOver={event => onHoverItem(label)}
@@ -23,8 +23,7 @@ const LegendItem = ({ label, color, size, y, isActive, onHoverItem }) => {
                 y={rect.y}
                 style={{
                     fill: color,
-                    stroke: color,
-                    strokeWidth: isActive ? 4 : 1
+                    stroke: color
                 }} />
         </g>
     )
