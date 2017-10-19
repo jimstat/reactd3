@@ -1,4 +1,14 @@
-const featureFilter = feature => feature !== 'organic'
+const excludeFeatures = [
+  'organic',
+  'answers (list)',
+  'answers (paragraph)',
+  'answers (table)',
+  'amp (organic)',
+  'amp (news)',
+  'amp (recipes)',
+  'knowledge graph (other)'
+]
+const featureFilter = feature => !excludeFeatures.includes(feature)
 
 const processData = data => {
   const current = Object.keys(data.current)

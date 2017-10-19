@@ -27,3 +27,13 @@
   font-size: 10px;
 }
 
+.legend-item {
+  font-size: 11px;
+  cursor: pointer;
+  pointer-events: bounding-box;
+}
+
+.bold {
+  font-weight: bold;
+}
+

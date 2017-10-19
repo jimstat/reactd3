@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
 import { line } from 'd3-shape'
 import { nest } from 'd3-collection'
 import { scaleLinear, scaleTime } from 'd3-scale'

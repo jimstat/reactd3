@@ -5,12 +5,6 @@ import { scaleLinear, scaleBand } from 'd3-scale'
 import { max } from 'd3-array'
 
 class IntegratedBarChart extends Component {
-    static propTypes = {
-        width: React.PropTypes.number,
-        height: React.PropTypes.number,
-        data: React.PropTypes.array
-    }
-
     static defaultProps = {
         width: 500,
         height: 500,

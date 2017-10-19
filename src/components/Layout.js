@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import BlackboxLineChart from './blackbox/BlackboxLineChart';
 import BlackboxBarChart from './blackbox/BlackboxBarChart';
 import IntegratedBarChart from './integrated/IntegratedBarChart';
+import IntegratedLineChart from './integrated/IntegratedLineChart';
 import SeamlessBarChart from './seamless/SeamlessBarChart';
 
 class Layout extends Component {
@@ -13,7 +14,12 @@ class Layout extends Component {
       <Grid fluid={true}>
         <Row>
           <Col>
-            <BlackboxLineChart title="Blackbox Line" data={data.timeSeries} width={700} height={500} />
+            <BlackboxLineChart title="Blackbox Line" data={data.timeSeries} width={700} height={700} />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <IntegratedLineChart title="Integrated Line" data={data.timeSeries} width={1400} height={600} />
           </Col>
         </Row>
         <Row>

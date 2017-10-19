@@ -12,7 +12,8 @@ const D3Blackbox = (d3render) => {
         render() {
             const { x, y } = this.props
             return (
-                <g transform={`translate(${x}, ${y})`} ref="node" />
+                <g transform={`translate(${x}, ${y})`} 
+                   ref="node" />
             )
         }
     }

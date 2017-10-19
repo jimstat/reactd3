@@ -90,7 +90,7 @@ class SeamlessBarChart extends Component {
 
     render() {
         const { width, height, title } = this.props
-        const chart = this.createBarChart()
+        this.createBarChart()
         return (
             <div>
                 <h4>{title}</h4>

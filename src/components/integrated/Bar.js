@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 const Bar = ({ x, y, width, height, color = 'red', label}) => {
     const translate = `translate(${x}, ${y})`
