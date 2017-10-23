@@ -49,3 +49,11 @@
   font-weight: bold;
 }
 
+p {
+  text-align: left;
+}
+
+ul.approaches li {
+  margin-bottom: 40px
+}
+

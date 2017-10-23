@@ -33,10 +33,14 @@ class IntegratedLineChart extends Component {
         this.lineData = []
         this.legendItems = []
         this.padding = 30
+        this.legendXPos = 80
+        this.chartXPos = 250
+
+        this.updateD3(this.props)
     }
 
-    componentWillReceiveProps(props) {
-        this.updateD3(props)
+    componentWillReceiveProps(nextProps) {
+        this.updateD3(nextProps)
     }
 
     transformData(data) {
@@ -52,7 +56,7 @@ class IntegratedLineChart extends Component {
 
         this.xScale
             .domain(extent(data, d => d.date))
-            .range([0, width])
+            .range([0, width - this.chartXPos])
 
         this.yScale = scaleLinear()
             .domain([0, max(data, d => d.count)])
@@ -88,15 +92,14 @@ class IntegratedLineChart extends Component {
             <div>
                 <h4>{title}</h4>
                 <svg width={width}
-                    height={height}
-                    viewBox={`0 0 ${width} ${height}`}>
-                    <Legend x={80}
+                    height={height}>
+                    <Legend x={this.legendXPos}
                         y={this.padding * 2}
                         items={this.legendItems}
                         activeItem={this.state.highlightedFeature}
                         onHoverItem={this.highlightFeature} />
-                    <g transform={`translate(${250}, ${0})`}
-                       height={height}>
+                    <g transform={`translate(${this.chartXPos}, ${0})`}
+                        height={height}>
                         <XAxis scale={this.xScale}
                             x={0}
                             y={height - this.padding} />

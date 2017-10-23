@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { line } from 'd3-shape'
 import { nest } from 'd3-collection'
 import { scaleLinear, scaleTime } from 'd3-scale'
-import { max, extent } from 'd3-array'
+import { max, extent, ascending } from 'd3-array'
 import { select } from 'd3-selection'
 import { axisLeft, axisBottom } from 'd3-axis'
 import featureColors from '../../data/FeatureColors'
@@ -31,12 +31,13 @@ class BlackboxLineChart extends Component {
     transformData(data) {
         return nest()
             .key(function (d) { return d.feature; })
+            .sortKeys(ascending)
             .entries(data);
     }
 
     renderChart() {
         const { data, width, height } = this.props
-        const x = 250
+        const chartXPos = 250
         const y = 0
         const lineData = this.transformData(data)
 
@@ -45,14 +46,14 @@ class BlackboxLineChart extends Component {
 
         const chartG = this.svg
             .append('g')
-            .attr('transform', `translate(${x}, ${y})`)
+            .attr('transform', `translate(${chartXPos}, ${y})`)
         const xScale = scaleTime()
             .domain(extent(data, d => d.date))
-            .range([0, width - x])
+            .range([0, width - chartXPos])
 
         const yScale = scaleLinear()
             .domain([0, max(data, d => d.count)])
-            .range([height - this.padding, 0])
+            .range([height - this.padding, this.padding])
 
         this.renderLegend(80, this.padding * 2, legendItems)
         this.renderAxes(chartG, xScale, yScale)
@@ -153,15 +154,12 @@ class BlackboxLineChart extends Component {
     }
 
     render() {
-        const { width, height, title } = this.props
+        const { width, height } = this.props
         return (
-            <div>
-                <h4>{title}</h4>
                 <svg ref={node => this.node = node}
                     width={width}
                     height={height}>
                 </svg>
-            </div>
         )
     }
 }

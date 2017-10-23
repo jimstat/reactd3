@@ -54,7 +54,7 @@ class SeamlessBarChart extends Component {
         select(faux)
             .selectAll("rect")
             .data(data)
-            .attr("y", (d, i) => yScale(d.feature))
+            .attr("y", (d, i) => yScale(d.feature) + 1)
             .attr("x", d => this.yAxisXPos)
             .attr("width", d => xScale(d.total))
             .attr("height", ((height - this.padding * 2) / features.length) - 5)
@@ -77,7 +77,7 @@ class SeamlessBarChart extends Component {
             .data(data)
             .text(d => d.total)
             .attr('x', d => xScale(d.total) + this.yAxisXPos + this.barLabelOffset)
-            .attr('y', d => yScale(d.feature) + 10)
+            .attr('y', d => yScale(d.feature) + 14)
             .attr('class', 'bar-text')
 
         select(faux)
@@ -89,16 +89,13 @@ class SeamlessBarChart extends Component {
     }
 
     render() {
-        const { width, height, title } = this.props
+        const { width, height } = this.props
         this.createBarChart()
         return (
-            <div>
-                <h4>{title}</h4>
-                <svg width={width}
-                    height={height}>
-                    {this.props.chart}
-                </svg>
-            </div>
+            <svg width={width}
+                height={height}>
+                {this.props.chart}
+            </svg>
         )
     }
 }

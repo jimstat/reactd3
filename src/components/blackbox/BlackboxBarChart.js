@@ -16,10 +16,13 @@ class BlackboxBarChart extends Component {
         this.createBarChart = this.createBarChart.bind(this)
     }
 
+    //Initialization that requires DOM nodes should go here.
     componentDidMount() {
         this.createBarChart()
     }
 
+    //This method is not called for the initial render.
+    //Use this as an opportunity to operate on the DOM when the component has been updated.
     componentDidUpdate() {
         this.createBarChart()
     }
@@ -53,7 +56,7 @@ class BlackboxBarChart extends Component {
         select(node)
             .selectAll("rect")
             .data(data)
-            .attr("y", (d, i) => yScale(d.feature))
+            .attr("y", (d, i) => yScale(d.feature) + 1)
             .attr("x", d => this.yAxisXPos)
             .attr("width", d => xScale(d.total))
             .attr("height", ((height - this.padding * 2) / features.length) - 5)
@@ -76,7 +79,7 @@ class BlackboxBarChart extends Component {
             .data(data)
             .text(d => d.total)
             .attr('x', d => xScale(d.total) + this.yAxisXPos + this.barLabelOffset)
-            .attr('y', d => yScale(d.feature) + 10)
+            .attr('y', d => yScale(d.feature) + 14)
             .attr('class', 'bar-text')
 
         select(node)
@@ -86,15 +89,12 @@ class BlackboxBarChart extends Component {
     }
 
     render() {
-        const { width, height, title } = this.props
+        const { width, height } = this.props
         return (
-            <div>
-                <h4>{title}</h4>
-                <svg ref={node => this.node = node}
-                    width={width}
-                    height={height}>
-                </svg>
-            </div>
+            <svg ref={node => this.node = node}
+                width={width}
+                height={height}>
+            </svg>
         )
     }
 }

@@ -22,10 +22,10 @@ class IntegratedBarChart extends Component {
         this.xScale = scaleLinear()
         this.yScale = scaleBand()
         this.makeBar = this.makeBar.bind(this)
-
-        this.updateD3(props)
+        this.updateD3(this.props)
     }
 
+    //invoked before render
     componentWillReceiveProps(newProps) {
         this.updateD3(newProps)
     }
@@ -47,7 +47,7 @@ class IntegratedBarChart extends Component {
     makeBar(bar) {
         const p = {
             x: this.yAxisXPos,
-            y: this.yScale(bar.feature),
+            y: this.yScale(bar.feature) + this.padding,
             width: this.xScale(bar.total),
             height: ((this.height - this.padding * 2) / this.features.length) - 5,
             color: 'steelblue',
@@ -59,20 +59,17 @@ class IntegratedBarChart extends Component {
     }
 
     render() {
-        const { data, width, height, title } = this.props
+        const { data, width, height } = this.props
 
         return (
-            <div>
-                <h4>{title}</h4>
-                <svg width={width} height={height} >
-                    <YAxis scale={this.yScale} 
-                            x={this.yAxisXPos} 
-                            y={this.padding} />
-                    <g className="bars">
-                        {data.map(this.makeBar)}
-                    </g>
-                </svg>
-            </div>
+            <svg width={width} height={height} >
+                <YAxis scale={this.yScale}
+                    x={this.yAxisXPos}
+                    y={this.padding} />
+                <g className="bars">
+                    {data.map(this.makeBar)}
+                </g>
+            </svg>
         )
     }
 }
